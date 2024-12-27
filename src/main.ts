@@ -10,6 +10,7 @@ import YAML from 'yaml';
 import swaggerUi from 'swagger-ui-express';
 import logger, { httpLogger } from './lib/logger.service';
 import { convertDocumentationToYaml } from './openapi/swagger-doc-generator';
+import globalErrorHandler from './utils/globalErrorHandler';
 
 const bootstrap = async () => {
   await connectDatabase();
@@ -27,6 +28,8 @@ const bootstrap = async () => {
 
   const swaggerDocument = YAML.parse(convertDocumentationToYaml());
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+  app.use(globalErrorHandler);
 
   app.listen(env.PORT, () => {
     logger.info(`Server is running on http://localhost:${env.PORT}`);
