@@ -7,3 +7,5 @@ const bootstrap = async () => {
     console.log(`Server is listening on port http://localhost:${process.env.PORT}`);
   });
 };
+
+bootstrap();
