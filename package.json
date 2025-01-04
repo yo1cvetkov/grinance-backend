@@ -1,7 +1,7 @@
 {
   "name": "grinance-be",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "tsx ./src/main.ts"
   },
@@ -10,7 +10,12 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
   }
 }
