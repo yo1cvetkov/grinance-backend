@@ -5,7 +5,7 @@ import { AIInsight } from "src/modules/ai-insights/ai-insight.entity";
 import { Budget } from "src/modules/budgets/budget.entity";
 import { Category } from "src/modules/categories/category.entity";
 import { OneTimeTransaction, RecurringTransaction } from "src/modules/transactions/transaction.entity";
-import { User } from "src/modules/user/user.entity";
+import { User } from "src/modules/users/user.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",

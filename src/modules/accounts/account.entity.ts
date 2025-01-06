@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Budget } from "../budgets/budget.entity";
 import { Transaction } from "../transactions/transaction.entity";
-import { User } from "../user/user.entity";
+import { User } from "../users/user.entity";
 import { Currency } from "./currency.enum";
 import { AIInsight } from "../ai-insights/ai-insight.entity";
 
