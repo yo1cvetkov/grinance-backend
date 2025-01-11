@@ -1,29 +1,36 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Account } from "../accounts/account.entity";
-import { InsightType } from "./insight-type.enum";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Account } from '../accounts/account.entity';
+import { InsightType } from './insight-type.enum';
 
 @Entity()
 export class AIInsight {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: InsightType,
     default: InsightType.BUDGETING_RECOMMENDATIONS,
   })
   insightType: InsightType;
 
-  @Column({ nullable: false })
+  @Column({ type: 'text', nullable: false })
   insightDetails: string;
 
   @CreateDateColumn()
   dateGenerated: Date;
 
-  @Column({ type: "boolean", default: false })
+  @Column({ type: 'boolean', default: false })
   isImportant: boolean;
 
   @ManyToOne(() => Account, (account) => account.aiInsights)
-  @JoinColumn({ name: "account_id" })
+  @JoinColumn({ name: 'account_id' })
   account: Account;
 }

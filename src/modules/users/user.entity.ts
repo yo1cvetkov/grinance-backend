@@ -1,28 +1,38 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Account } from "../accounts/account.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Account } from '../accounts/account.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
+    type: 'varchar',
     nullable: false,
   })
   name: string;
 
   @Column({
+    type: 'varchar',
     unique: true,
     nullable: false,
   })
   email: string;
 
   @Column({
-    type: "date",
+    type: 'date',
   })
   birthDate: Date;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   password: string;
 
   @OneToMany(() => Account, (account) => account.user)

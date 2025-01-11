@@ -1,13 +1,19 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Transaction } from "../transactions/transaction.entity";
-import { Budget } from "../budgets/budget.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Transaction } from '../transactions/transaction.entity';
+import { Budget } from '../budgets/budget.entity';
 
 @Entity()
 export class Category {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   name: string;
 
   @OneToMany(() => Transaction, (transaction) => transaction.category)

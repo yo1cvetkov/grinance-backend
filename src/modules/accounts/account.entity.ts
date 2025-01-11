@@ -1,29 +1,39 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Budget } from "../budgets/budget.entity";
-import { Transaction } from "../transactions/transaction.entity";
-import { User } from "../users/user.entity";
-import { Currency } from "./currency.enum";
-import { AIInsight } from "../ai-insights/ai-insight.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Budget } from '../budgets/budget.entity';
+import { Transaction } from '../transactions/transaction.entity';
+import { User } from '../users/user.entity';
+import { Currency } from './currency.enum';
+import { AIInsight } from '../ai-insights/ai-insight.entity';
 
 @Entity()
 export class Account {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, (user) => user.accounts)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({
+    type: 'varchar',
     nullable: false,
   })
   name: string;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column('decimal', { precision: 10, scale: 2, default: 0 })
   balance: number;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: Currency,
     default: Currency.USD,
   })

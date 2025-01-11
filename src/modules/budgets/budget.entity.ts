@@ -1,24 +1,32 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Account } from "../accounts/account.entity";
-import { Category } from "../categories/category.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Account } from '../accounts/account.entity';
+import { Category } from '../categories/category.entity';
 
 @Entity()
 export class Budget {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  @Column('decimal', { precision: 10, scale: 2, default: 0 })
   amount: number;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @ManyToOne(() => Account, (account) => account.budgets)
-  @JoinColumn({ name: "account_id" })
+  @JoinColumn({ name: 'account_id' })
   account: Account;
 
   @ManyToOne(() => Category, (category) => category.budgets)
-  @JoinColumn({ name: "category_id" })
+  @JoinColumn({ name: 'category_id' })
   category: Category;
 
   @CreateDateColumn()
