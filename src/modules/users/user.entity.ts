@@ -20,6 +20,13 @@ export class User {
 
   @Column({
     type: 'varchar',
+    nullable: false,
+    unique: true,
+  })
+  username: string;
+
+  @Column({
+    type: 'varchar',
     unique: true,
     nullable: false,
   })
