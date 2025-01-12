@@ -5,8 +5,7 @@ export const userResponseDTO = z.object({
   name: z.string(),
   username: z.string(),
   email: z.string().email(),
-  birthDate: z.date(),
-  createdAt: z.date(),
+  birthDate: z.string(),
   // TODO: Optionally add accounts array
 });
 
