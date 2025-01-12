@@ -30,3 +30,25 @@ export class ConflictException extends Error {
     Object.setPrototypeOf(this, ConflictException.prototype);
   }
 }
+
+export class UnauthorizedException extends Error {
+  statusCode: number;
+
+  constructor(message: string) {
+    super(message);
+    this.statusCode = StatusCodes.UNAUTHORIZED;
+
+    Object.setPrototypeOf(this, UnauthorizedException.prototype);
+  }
+}
+
+export class ForbiddenException extends Error {
+  statusCode: number;
+
+  constructor(message: string) {
+    super(message);
+    this.statusCode = StatusCodes.FORBIDDEN;
+
+    Object.setPrototypeOf(this, ForbiddenException.prototype);
+  }
+}

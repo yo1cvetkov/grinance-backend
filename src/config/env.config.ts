@@ -11,6 +11,11 @@ const envConfigSchema = z.object({
   DB_NAME: z.string(),
   ACCESS_TOKEN_SECRET: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),
+  NODE_ENV: z
+    .union([z.literal('production'), z.literal('development')])
+    .default('development')
+    .optional(),
+  COOKIE_SESSION_SECRET_KEY: z.string(),
 });
 
 export type EnvConfig = z.infer<typeof envConfigSchema>;

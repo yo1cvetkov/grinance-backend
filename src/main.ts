@@ -6,10 +6,23 @@ import { connectToDb } from './lib/data-source';
 import apiRouter from './api-router';
 import { globalErrorHandler } from './utils/globalErrorHandler';
 
+import cookieSession from 'cookie-session';
+import env from './config/env.config';
+
 const bootstrap = async () => {
   await connectToDb();
 
   const app = express();
+
+  app.use(
+    cookieSession({
+      name: 'session',
+      secret: env.COOKIE_SESSION_SECRET_KEY,
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
+  );
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));

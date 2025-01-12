@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 
 import crypto from 'crypto';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import env from 'src/config/env.config';
+import { ForbiddenException, UnauthorizedException } from 'src/lib/exceptions';
 
 export type JwtPayload = {
   sub: string;
@@ -24,6 +25,19 @@ export const compareHash = async (
   plainPassword: string
 ): Promise<boolean> => {
   return await bcrypt.compare(plainPassword, hashedPassword);
+};
+
+export const verifyToken = async <T extends JwtPayload>(
+  token: string,
+  secret: string
+): Promise<T> => {
+  try {
+    console.log('Verifying token...');
+
+    return verify(token, secret) as T;
+  } catch (error) {
+    throw new ForbiddenException('Token expired or not valid');
+  }
 };
 
 export const generateAccessToken = (jwtPayload: JwtPayload) =>

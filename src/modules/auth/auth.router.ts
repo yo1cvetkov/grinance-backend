@@ -1,7 +1,13 @@
 import { Router } from 'express';
 import { validateZodSchema } from 'src/middlewares/validate-zod-schema.middleware';
-import { registerUserSchema } from './auth.schema';
-import { handleRegisterUser } from './auth.controller';
+import { loginUserSchema, registerUserSchema } from './auth.schema';
+import {
+  handleLoginUser,
+  handleProtectedRoute,
+  handleRegisterUser,
+  handleTokenRefresh,
+} from './auth.controller';
+import { authenticate } from 'src/middlewares/authenticate.middleware';
 
 export const AUTH_ROUTER_ROOT = '/auth';
 
@@ -12,5 +18,11 @@ authRouter.post(
   validateZodSchema(registerUserSchema),
   handleRegisterUser
 );
+
+authRouter.post('/login', validateZodSchema(loginUserSchema), handleLoginUser);
+
+authRouter.get('/refresh', handleTokenRefresh);
+
+authRouter.get('/protected', authenticate, handleProtectedRoute);
 
 export default authRouter;
