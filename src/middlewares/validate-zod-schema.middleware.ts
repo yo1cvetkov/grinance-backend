@@ -38,3 +38,5 @@ export const validateZodSchema =
       }
     }
   };
+
+// TODO: Add middleware for params and for query validation using zod

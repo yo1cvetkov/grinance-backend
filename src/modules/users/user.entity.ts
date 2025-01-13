@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -41,6 +43,10 @@ export class User {
     type: 'varchar',
   })
   password: string;
+
+  @ManyToOne(() => Account, { nullable: true })
+  @JoinColumn({ name: 'activeAccountId' })
+  activeAccount: Account;
 
   @OneToMany(() => Account, (account) => account.user)
   accounts: Account[];
