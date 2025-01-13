@@ -17,8 +17,6 @@ export const authenticate = async (
       return;
     }
 
-    console.log('Entered here');
-
     const token = req.session?.accessToken;
 
     const decode = await verifyToken<JwtPayload>(

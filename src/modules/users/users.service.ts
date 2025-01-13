@@ -1,11 +1,10 @@
 import { ConflictException, NotFoundException } from 'src/lib/exceptions';
 import { hashPassword } from '../auth/auth.utils';
-import { UserResponseType } from './user.dto';
+import { UserResponseType, UserType } from './user.dto';
 import { User } from './user.entity';
 import { BaseCreateUserSchemaType } from './user.schema';
 import { UsersRepository } from './users.respository';
 
-// TODO: Revisit once you figure out if this needs accounts relation
 export const getUserById = async (id: string): Promise<User> => {
   const user = await UsersRepository.findOneBy({ id });
 
@@ -66,4 +65,21 @@ export const createUser = async (
   });
 
   return createdUser;
+};
+
+export const updateUser = async (
+  userId: string,
+  payload: Partial<UserType>
+): Promise<User> => {
+  const findUser = await UsersRepository.findOneBy({ id: userId });
+
+  if (!findUser) {
+    throw new NotFoundException('User not found.');
+  }
+
+  Object.assign(findUser, payload);
+
+  const user = await UsersRepository.save(findUser);
+
+  return user;
 };

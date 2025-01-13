@@ -40,8 +40,27 @@ export const verifyToken = async <T extends JwtPayload>(
   }
 };
 
+export const generateOTP = (): [string, number] => {
+  let otp = '';
+  let ttl: number;
+
+  if (Boolean(Number(env.STATIC_OTP))) {
+    otp = '1234';
+    ttl = 300;
+  } else {
+    otp = crypto.randomInt(1000, 10000).toString();
+    ttl = Number(env.OTP_TTL) || 300;
+  }
+
+  return [otp, ttl];
+};
+
 export const generateAccessToken = (jwtPayload: JwtPayload) =>
-  sign(jwtPayload, env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+  sign(jwtPayload, env.ACCESS_TOKEN_SECRET, {
+    expiresIn: String(env.ACCESS_TOKEN_EXPIRATION),
+  });
 
 export const generateRefreshToken = (jwtPayload: JwtPayload) =>
-  sign(jwtPayload, env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+  sign(jwtPayload, env.REFRESH_TOKEN_SECRET, {
+    expiresIn: String(env.REFRESH_TOKEN_EXPIRATION),
+  });

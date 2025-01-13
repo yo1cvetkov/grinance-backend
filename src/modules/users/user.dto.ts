@@ -11,8 +11,9 @@ export const userResponseDTO = z.object({
 
 export const fullUserDTO = userResponseDTO.extend({
   password: z.string(),
+  passwordResetCode: z.string().nullable().optional(),
   // TODO: Or optionally add accounts array here
 });
 
 export type UserResponseType = z.infer<typeof userResponseDTO>;
-export type UserType = z.infer<typeof fullUserDTO> & { id: string };
+export type UserType = z.infer<typeof fullUserDTO>;

@@ -8,9 +8,11 @@ import { globalErrorHandler } from './utils/globalErrorHandler';
 
 import cookieSession from 'cookie-session';
 import env from './config/env.config';
+import { connectRedis } from './lib/redis-client';
 
 const bootstrap = async () => {
   await connectToDb();
+  await connectRedis();
 
   const app = express();
 

@@ -1,10 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
-import { LoginUserSchemaType, RegisterUserSchemaType } from './auth.schema';
-import { loginUser, registerUser } from './auth.service';
+import {
+  ChangePasswordSchemaType,
+  ForgetPasswordSchemaType,
+  LoginUserSchemaType,
+  RegisterUserSchemaType,
+  ResetPasswordSchemaType,
+} from './auth.schema';
+import {
+  changePassword,
+  forgetPassword,
+  loginUser,
+  registerUser,
+  resetPassword,
+} from './auth.service';
 import { StatusCodes } from 'http-status-codes';
 import { userResponseDTO } from '../users/user.dto';
 import { generateAccessToken, JwtPayload, verifyToken } from './auth.utils';
 import env from 'src/config/env.config';
+import { getUserById } from '../users/users.service';
 
 export const handleRegisterUser = async (
   req: Request<unknown, unknown, RegisterUserSchemaType>,
@@ -70,6 +83,81 @@ export const handleTokenRefresh = async (
     req.session.accessToken = newAccessToken;
 
     res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleChangePassword = async (
+  req: Request<unknown, unknown, ChangePasswordSchemaType>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await changePassword(req.user.sub, req.body);
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleForgetPassword = async (
+  req: Request<unknown, unknown, ForgetPasswordSchemaType>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = await forgetPassword(req.body);
+    res.status(StatusCodes.OK).json({ message: 'Code sent.', email });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleResetPassword = async (
+  req: Request<unknown, unknown, ResetPasswordSchemaType>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await resetPassword(req.body);
+
+    req.session = undefined;
+
+    res.clearCookie('session');
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    req.session = undefined;
+
+    res.clearCookie('session');
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleWhoAmI = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await getUserById(req.user.sub);
+
+    res.status(StatusCodes.OK).send(userResponseDTO.parse(user));
   } catch (error) {
     next(error);
   }

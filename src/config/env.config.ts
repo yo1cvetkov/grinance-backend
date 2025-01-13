@@ -16,6 +16,14 @@ const envConfigSchema = z.object({
     .default('development')
     .optional(),
   COOKIE_SESSION_SECRET_KEY: z.string(),
+  ACCESS_TOKEN_EXPIRATION: z.string(),
+  REFRESH_TOKEN_EXPIRATION: z.string(),
+  STATIC_OTP: z
+    .literal('0')
+    .or(z.literal('1'))
+    .transform((val) => Number(val)),
+  OTP_TTL: z.string().transform(Number).optional(),
+  REDIS_URL: z.string(),
 });
 
 export type EnvConfig = z.infer<typeof envConfigSchema>;
