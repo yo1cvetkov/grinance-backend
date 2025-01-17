@@ -24,6 +24,7 @@ const envConfigSchema = z.object({
     .transform((val) => Number(val)),
   OTP_TTL: z.string().transform(Number).optional(),
   REDIS_URL: z.string(),
+  CLIENT_URL: z.string().url(),
 });
 
 export type EnvConfig = z.infer<typeof envConfigSchema>;

@@ -1,9 +1,9 @@
 import * as z from 'zod';
 import { isAdultSchema, isDateNotInFuture } from 'src/common/common.schema';
 
-const birthDateValidation = isDateNotInFuture('Birth date').and(
-  isAdultSchema('Birth date')
-);
+const birthDateValidation = isDateNotInFuture('Birth date')
+  .and(isAdultSchema('Birth date'))
+  .optional();
 
 export const baseCreateUserSchema = z.object({
   email: z
@@ -14,7 +14,8 @@ export const baseCreateUserSchema = z.object({
     .min(4, 'Username must be at least 4 characters long'),
   name: z
     .string({ required_error: 'Name is required' })
-    .min(2, 'Name must be at least 2 characters long.'),
+    .min(2, 'Name must be at least 2 characters long.')
+    .optional(),
   birthDate: birthDateValidation,
 });
 

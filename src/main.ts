@@ -5,7 +5,7 @@ import { connectToDb } from './lib/data-source';
 
 import apiRouter from './api-router';
 import { globalErrorHandler } from './utils/globalErrorHandler';
-
+import cors from 'cors';
 import cookieSession from 'cookie-session';
 import env from './config/env.config';
 import { connectRedis } from './lib/redis-client';
@@ -15,6 +15,14 @@ const bootstrap = async () => {
   await connectRedis();
 
   const app = express();
+
+  app.use(
+    cors({
+      origin: [env.CLIENT_URL],
+      optionsSuccessStatus: 200,
+      credentials: true,
+    })
+  );
 
   app.use(
     cookieSession({
