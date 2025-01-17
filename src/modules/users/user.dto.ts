@@ -3,10 +3,13 @@ import { baseAccountResponseDTO } from '../accounts/account.dto';
 
 export const userResponseDTO = z.object({
   id: z.string(),
-  name: z.string(),
   username: z.string(),
   email: z.string().email(),
+});
+
+export const extendedUserDTO = userResponseDTO.extend({
   birthDate: z.string(),
+  name: z.string(),
 });
 
 export const fullUserDTO = userResponseDTO.extend({
@@ -20,4 +23,5 @@ export const userResponseWithAccountsDTO = userResponseDTO.extend({
 });
 
 export type UserResponseType = z.infer<typeof userResponseDTO>;
+export type ExtendedUserResponseType = z.infer<typeof extendedUserDTO>;
 export type UserType = z.infer<typeof fullUserDTO>;

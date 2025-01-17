@@ -17,6 +17,7 @@ export class User {
   @Column({
     type: 'varchar',
     nullable: true,
+    default: null,
   })
   name: string | null;
 
@@ -37,6 +38,7 @@ export class User {
   @Column({
     type: 'date',
     nullable: true,
+    default: null,
   })
   birthDate: Date | null;
 
