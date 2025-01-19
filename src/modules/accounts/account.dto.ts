@@ -7,6 +7,6 @@ export const baseAccountResponseDTO = z.object({
 });
 
 export const accountResponseDTO = baseAccountResponseDTO.extend({
-  balance: z.string(),
+  balance: z.string().transform(Number),
   currency: z.enum([Currency.EUR, Currency.USD]),
 });

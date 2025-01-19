@@ -160,7 +160,7 @@ export const handleWhoAmI = async (
   try {
     const user = await getUserById(req.user.sub);
 
-    res.status(StatusCodes.OK).send(userResponseDTO.parse(user));
+    res.status(StatusCodes.OK).send(userResponseWithAccountsDTO.parse(user));
   } catch (error) {
     next(error);
   }

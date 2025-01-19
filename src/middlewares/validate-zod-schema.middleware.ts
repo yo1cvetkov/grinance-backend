@@ -28,9 +28,7 @@ export const validateZodSchema =
           message: `${issue.path.join('.')}: ${issue.message}`,
         }));
 
-        res
-          .status(StatusCodes.BAD_REQUEST)
-          .json({ error: 'Validation failed', details: errorMessages });
+        res.status(StatusCodes.BAD_REQUEST).json(error.errors[0].message);
       } else {
         res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)

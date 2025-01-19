@@ -1,10 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import { createUser, getUserById, setActiveAccount } from './users.service';
+import {
+  createUser,
+  getUserById,
+  setActiveAccount,
+  updateUser,
+} from './users.service';
 import { StatusCodes } from 'http-status-codes';
 import { BaseCreateUserSchemaType } from './user.schema';
 import { userResponseDTO } from './user.dto';
 import { generateRandomPassword } from '../auth/auth.utils';
 import { BadRequestException } from 'src/lib/exceptions';
+import { UpdateAccountSchemaType } from '../accounts/accounts.schema';
 
 export const handleCreateUser = async (
   req: Request<unknown, unknown, BaseCreateUserSchemaType>,
@@ -60,3 +66,21 @@ export const handleSetActiveAccount = async (
     next(error);
   }
 };
+
+// export const handleUpdateUser = async (
+//   req: Request<{ id: string }, UpdateUserSchemaType>,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     if (!req.params.id) {
+//       throw new BadRequestException('User id is missing');
+//     }
+
+//     const user = await updateUser(req.params.id, req.body);
+
+//     res.status(StatusCodes.OK).json(user);
+//   } catch (error) {
+//     next(error);
+//   }
+// };

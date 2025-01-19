@@ -16,10 +16,8 @@ export class User {
 
   @Column({
     type: 'varchar',
-    nullable: true,
-    default: null,
   })
-  name: string | null;
+  name: string;
 
   @Column({
     type: 'varchar',
@@ -37,10 +35,8 @@ export class User {
 
   @Column({
     type: 'date',
-    nullable: true,
-    default: null,
   })
-  birthDate: Date | null;
+  birthDate: Date;
 
   @Column({
     type: 'varchar',

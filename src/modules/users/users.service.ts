@@ -69,10 +69,10 @@ export const createUser = async (
 
   const { password, accounts, ...createdUser } = await UsersRepository.save({
     email: payload.email,
-    birthDate: payload.birthDate,
-    name: payload.name,
     password: hashedPassword,
     username: payload.username,
+    birthDate: payload.birthDate,
+    name: payload.name,
   });
 
   return createdUser;
