@@ -9,7 +9,6 @@ export type JwtPayload = {
   sub: string;
   email: string;
   username: string;
-  // Optionally add additional fields
 };
 
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -32,8 +31,6 @@ export const verifyToken = async <T extends JwtPayload>(
   secret: string
 ): Promise<T> => {
   try {
-    console.log('Verifying token...');
-
     return verify(token, secret) as T;
   } catch (error) {
     throw new ForbiddenException('Token expired or not valid');

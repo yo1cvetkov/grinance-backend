@@ -18,4 +18,13 @@ export const baseCreateUserSchema = z.object({
   birthDate: birthDateValidation,
 });
 
+export const updateUserSchema = z.object({
+  name: z.string({ required_error: 'User Name is required' }),
+  username: z
+    .string({ required_error: 'Username is required' })
+    .min(1, 'Username is required'),
+  birthDate: birthDateValidation,
+});
+
 export type BaseCreateUserSchemaType = z.infer<typeof baseCreateUserSchema>;
+export type UpdateUserSchemaType = z.infer<typeof updateUserSchema>;

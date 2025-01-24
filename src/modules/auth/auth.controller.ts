@@ -14,7 +14,10 @@ import {
   resetPassword,
 } from './auth.service';
 import { StatusCodes } from 'http-status-codes';
-import { userResponseDTO } from '../users/user.dto';
+import {
+  userResponseDTO,
+  userResponseWithAccountsDTO,
+} from '../users/user.dto';
 import { generateAccessToken, JwtPayload, verifyToken } from './auth.utils';
 import env from 'src/config/env.config';
 import { getUserById } from '../users/users.service';
@@ -157,20 +160,7 @@ export const handleWhoAmI = async (
   try {
     const user = await getUserById(req.user.sub);
 
-    res.status(StatusCodes.OK).send(userResponseDTO.parse(user));
-  } catch (error) {
-    next(error);
-  }
-};
-
-// TODO: Remove this because it is just a example of protected route
-export const handleProtectedRoute = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    res.status(StatusCodes.OK).json({ message: 'Protected data is available' });
+    res.status(StatusCodes.OK).send(userResponseWithAccountsDTO.parse(user));
   } catch (error) {
     next(error);
   }

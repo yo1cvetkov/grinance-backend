@@ -1,4 +1,8 @@
-import { ConflictException, NotFoundException } from 'src/lib/exceptions';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from 'src/lib/exceptions';
 import { hashPassword } from '../auth/auth.utils';
 import { UserResponseType, UserType } from './user.dto';
 import { User } from './user.entity';
@@ -6,7 +10,13 @@ import { BaseCreateUserSchemaType } from './user.schema';
 import { UsersRepository } from './users.respository';
 
 export const getUserById = async (id: string): Promise<User> => {
-  const user = await UsersRepository.findOneBy({ id });
+  const user = await UsersRepository.findOne({
+    where: { id },
+    relations: {
+      accounts: true,
+      activeAccount: true,
+    },
+  });
 
   if (!user) {
     throw new NotFoundException('User not found.');
@@ -58,10 +68,10 @@ export const createUser = async (
 
   const { password, accounts, ...createdUser } = await UsersRepository.save({
     email: payload.email,
-    birthDate: payload.birthDate,
-    name: payload.name,
     password: hashedPassword,
     username: payload.username,
+    birthDate: payload.birthDate,
+    name: payload.name,
   });
 
   return createdUser;
@@ -82,4 +92,18 @@ export const updateUser = async (
   const user = await UsersRepository.save(findUser);
 
   return user;
+};
+
+export const setActiveAccount = async (userId: string, accountId: string) => {
+  const user = await getUserById(userId);
+
+  const account = user.accounts.find((acc) => acc.id === accountId);
+
+  if (!account) {
+    throw new BadRequestException('Invalid account for this user.');
+  }
+
+  user.activeAccount = account;
+
+  await UsersRepository.save(user);
 };

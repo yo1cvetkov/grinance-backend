@@ -12,7 +12,6 @@ import {
   handleForgetPassword,
   handleLoginUser,
   handleLogout,
-  handleProtectedRoute,
   handleRegisterUser,
   handleResetPassword,
   handleTokenRefresh,
@@ -56,7 +55,5 @@ authRouter.post(
 authRouter.post('/logout', authenticate, handleLogout);
 
 authRouter.get('/whoAmI', authenticate, handleWhoAmI);
-
-authRouter.get('/protected', authenticate, handleProtectedRoute);
 
 export default authRouter;
