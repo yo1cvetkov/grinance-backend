@@ -33,7 +33,7 @@ export const createBudget = async (
   }
 
   if (account.balance < payload.amount) {
-    throw new BadRequestException('Balance exceeded');
+    throw new BadRequestException('Insufficient funds.');
   }
 
   const budget = await BudgetsRepository.save({
@@ -50,4 +50,29 @@ export const createBudget = async (
   });
 
   return budget;
+};
+
+export const getAccountBudgets = async (userId: string, accountId: string) => {
+  const user = await getUserById(userId);
+
+  if (user.activeAccount.id === accountId) {
+    throw new BadRequestException(
+      "Account doesn't belong to the specific user or not active."
+    );
+  }
+
+  const account = await AccountsRepository.findOne({
+    where: {
+      id: accountId,
+    },
+    relations: {
+      budgets: true,
+    },
+  });
+
+  if (!account) {
+    throw new NotFoundException('Account not found.');
+  }
+
+  return account.budgets;
 };

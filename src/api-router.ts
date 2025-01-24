@@ -10,6 +10,9 @@ import budgetsRouter, {
 import categoriesRouter, {
   CATEGORIES_API_ROOT,
 } from './modules/categories/categories.router';
+import transactionsRouter, {
+  TRANSACTIONS_API_ROOT,
+} from './modules/transactions/transactions.router';
 
 const apiRouter = Router();
 
@@ -18,5 +21,6 @@ apiRouter.use(AUTH_ROUTER_ROOT, authRouter);
 apiRouter.use(ACCOUNTS_ROUTER_ROOT, accountsRouter);
 apiRouter.use(BUDGETS_ROUTER_ROOT, budgetsRouter);
 apiRouter.use(CATEGORIES_API_ROOT, categoriesRouter);
+apiRouter.use(TRANSACTIONS_API_ROOT, transactionsRouter);
 
 export default apiRouter;
