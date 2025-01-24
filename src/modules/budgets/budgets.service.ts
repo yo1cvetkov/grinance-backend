@@ -33,7 +33,7 @@ export const createBudget = async (
   }
 
   if (account.balance < payload.amount) {
-    throw new BadRequestException('Balance exceeded');
+    throw new BadRequestException('Insufficient funds.');
   }
 
   const budget = await BudgetsRepository.save({
