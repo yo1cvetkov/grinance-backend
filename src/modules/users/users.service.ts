@@ -8,7 +8,6 @@ import { UserResponseType, UserType } from './user.dto';
 import { User } from './user.entity';
 import { BaseCreateUserSchemaType } from './user.schema';
 import { UsersRepository } from './users.respository';
-import { Account } from '../accounts/account.entity';
 
 export const getUserById = async (id: string): Promise<User> => {
   const user = await UsersRepository.findOne({
