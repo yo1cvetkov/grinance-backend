@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
-import { handleCreateBudget } from './budgets.controller';
+import {
+  handleCreateBudget,
+  handleGetAccountBudgets,
+} from './budgets.controller';
 import { validateZodSchema } from 'src/middlewares/validate-zod-schema.middleware';
 import { createBudgetSchema } from './budgets.schema';
 import { authenticate } from 'src/middlewares/authenticate.middleware';
@@ -15,5 +18,7 @@ budgetsRouter.post(
   validateZodSchema(createBudgetSchema),
   handleCreateBudget
 );
+
+budgetsRouter.get('/:accountId', authenticate, handleGetAccountBudgets);
 
 export default budgetsRouter;
