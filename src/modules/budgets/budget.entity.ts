@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -11,6 +12,7 @@ import { Account } from '../accounts/account.entity';
 import { Category } from '../categories/category.entity';
 
 @Entity()
+@Index(['account', 'category'], { unique: true })
 export class Budget {
   @PrimaryGeneratedColumn('uuid')
   id: string;
