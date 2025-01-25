@@ -1,4 +1,5 @@
 import z from 'zod';
+import validator from 'validator';
 import { TransactionType } from './transaction-type.enum';
 
 export const baseCreateTransactionSchema = z.object({
@@ -13,7 +14,7 @@ export const baseCreateTransactionSchema = z.object({
 export const createOneTimeTransactionSchema =
   baseCreateTransactionSchema.extend({
     type: z.enum([TransactionType.EXPENSE, TransactionType.INCOME]),
-    transactionDate: z.date(),
+    transactionDate: z.string(),
   });
 
 export type CreateOneTimeTransactionSchemaType = z.infer<

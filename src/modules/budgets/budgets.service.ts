@@ -55,7 +55,7 @@ export const createBudget = async (
 export const getAccountBudgets = async (userId: string, accountId: string) => {
   const user = await getUserById(userId);
 
-  if (user.activeAccount.id === accountId) {
+  if (user.activeAccount.id !== accountId) {
     throw new BadRequestException(
       "Account doesn't belong to the specific user or not active."
     );
@@ -66,7 +66,10 @@ export const getAccountBudgets = async (userId: string, accountId: string) => {
       id: accountId,
     },
     relations: {
-      budgets: true,
+      budgets: {
+        category: true,
+        account: true,
+      },
     },
   });
 

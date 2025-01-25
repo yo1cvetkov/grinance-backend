@@ -5,6 +5,7 @@ import { AccountsRepository } from '../accounts/accounts.repository';
 import { CategoriesRepository } from '../categories/categories.repository';
 import { OneTimeTransactionRepository } from './transactions.repository';
 import { BudgetsRepository } from '../budgets/budgets.repository';
+import { TransactionType } from './transaction-type.enum';
 
 export const createOneTimeTransaction = async (
   userId: string,
@@ -34,8 +35,8 @@ export const createOneTimeTransaction = async (
 
   const budget = await BudgetsRepository.findOne({
     where: {
-      category: category,
-      account: account,
+      category: { id: category.id },
+      account: { id: account.id },
     },
   });
 
@@ -58,9 +59,15 @@ export const createOneTimeTransaction = async (
     transactionDate: payload.transactionDate,
   });
 
-  Object.assign(budget, { amount: budget.amount - transaction.amount });
+  if (transaction.type === TransactionType.EXPENSE) {
+    Object.assign(budget, { amount: budget.amount - transaction.amount });
+    Object.assign(account, { balance: account.balance - transaction.amount });
+  }
 
-  Object.assign(account, { balance: account.balance - transaction.amount });
+  if (transaction.type === TransactionType.INCOME) {
+    Object.assign(budget, { amount: budget.amount + transaction.amount });
+    Object.assign(account, { balance: account.balance + transaction.amount });
+  }
 
   await BudgetsRepository.save(budget);
   await AccountsRepository.save(account);
