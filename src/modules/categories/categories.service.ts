@@ -8,3 +8,9 @@ export const createCategory = async (payload: CreateCategorySchemaType) => {
 
   return category;
 };
+
+export const getCategories = async () => {
+  const categories = await CategoriesRepository.find();
+
+  return categories;
+};
