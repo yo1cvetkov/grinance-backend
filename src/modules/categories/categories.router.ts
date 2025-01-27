@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { handleCreateCategory } from './categories.controller';
+import {
+  handleCreateCategory,
+  handleGetCategories,
+} from './categories.controller';
 import { validateZodSchema } from 'src/middlewares/validate-zod-schema.middleware';
 import { createCategorySchema } from './categories.schema';
 import { authenticate } from 'src/middlewares/authenticate.middleware';
@@ -14,5 +17,7 @@ categoriesRouter.post(
   validateZodSchema(createCategorySchema),
   handleCreateCategory
 );
+
+categoriesRouter.get('/', authenticate, handleGetCategories);
 
 export default categoriesRouter;

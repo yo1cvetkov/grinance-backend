@@ -15,7 +15,7 @@ import { TransactionType } from './transaction-type.enum';
 import { FrequencyType } from './frequency-type.enum';
 
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+@TableInheritance({ column: { type: 'varchar', name: 'duration' } })
 export abstract class Transaction {
   @PrimaryGeneratedColumn('uuid')
   id: string;

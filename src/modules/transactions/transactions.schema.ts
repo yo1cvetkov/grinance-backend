@@ -13,7 +13,7 @@ export const baseCreateTransactionSchema = z.object({
 export const createOneTimeTransactionSchema =
   baseCreateTransactionSchema.extend({
     type: z.enum([TransactionType.EXPENSE, TransactionType.INCOME]),
-    transactionDate: z.date(),
+    transactionDate: z.string(),
   });
 
 export type CreateOneTimeTransactionSchemaType = z.infer<

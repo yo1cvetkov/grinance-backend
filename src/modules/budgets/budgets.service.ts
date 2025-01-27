@@ -36,17 +36,21 @@ export const createBudget = async (
     throw new BadRequestException('Insufficient funds.');
   }
 
+  const accountBudgets = await getAccountBudgets(userId, account.id);
+
+  if (
+    payload.amount >
+    account.balance -
+      accountBudgets.reduce((acc, budget) => acc + budget.amount, 0)
+  ) {
+    throw new BadRequestException('Insufficient funds.');
+  }
+
   const budget = await BudgetsRepository.save({
     category: category,
     amount: payload.amount,
     account: account,
     description: payload.description,
-  });
-
-  await updateAccount(userId, payload.accountId, {
-    balance: account.balance - payload.amount,
-    currency: account.currency,
-    name: account.name,
   });
 
   return budget;
@@ -55,7 +59,7 @@ export const createBudget = async (
 export const getAccountBudgets = async (userId: string, accountId: string) => {
   const user = await getUserById(userId);
 
-  if (user.activeAccount.id === accountId) {
+  if (user.activeAccount.id !== accountId) {
     throw new BadRequestException(
       "Account doesn't belong to the specific user or not active."
     );
@@ -66,7 +70,10 @@ export const getAccountBudgets = async (userId: string, accountId: string) => {
       id: accountId,
     },
     relations: {
-      budgets: true,
+      budgets: {
+        category: true,
+        account: true,
+      },
     },
   });
 
