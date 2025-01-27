@@ -36,17 +36,21 @@ export const createBudget = async (
     throw new BadRequestException('Insufficient funds.');
   }
 
+  const accountBudgets = await getAccountBudgets(userId, account.id);
+
+  if (
+    payload.amount >
+    account.balance -
+      accountBudgets.reduce((acc, budget) => acc + budget.amount, 0)
+  ) {
+    throw new BadRequestException('Insufficient funds.');
+  }
+
   const budget = await BudgetsRepository.save({
     category: category,
     amount: payload.amount,
     account: account,
     description: payload.description,
-  });
-
-  await updateAccount(userId, payload.accountId, {
-    balance: account.balance - payload.amount,
-    currency: account.currency,
-    name: account.name,
   });
 
   return budget;

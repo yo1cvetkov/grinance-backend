@@ -6,6 +6,8 @@ import { CategoriesRepository } from '../categories/categories.repository';
 import { OneTimeTransactionRepository } from './transactions.repository';
 import { BudgetsRepository } from '../budgets/budgets.repository';
 import { TransactionType } from './transaction-type.enum';
+import { PaginatedTransactionsSchemaType } from './transaction.dto';
+import { getAccountById } from '../accounts/accounts.service';
 
 export const createOneTimeTransaction = async (
   userId: string,
@@ -73,4 +75,76 @@ export const createOneTimeTransaction = async (
   await AccountsRepository.save(account);
 
   return transaction;
+};
+
+export const getAllTransactions = async (
+  userId: string,
+  accountId: string,
+  { page = 1, limit = 10, budgetId }: PaginatedTransactionsSchemaType
+) => {
+  const account = await getAccountById(userId, accountId);
+
+  const skip = (page - 1) * limit;
+
+  if (!budgetId) {
+    const [transactions, total] =
+      await OneTimeTransactionRepository.findAndCount({
+        where: {
+          account: {
+            id: account.id,
+          },
+        },
+        take: limit,
+        skip: skip,
+        order: { createdAt: 'desc' },
+        relations: {
+          category: true,
+        },
+      });
+
+    return {
+      transactions,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
+  const budget = await BudgetsRepository.findOne({
+    where: {
+      id: budgetId,
+    },
+    relations: {
+      category: true,
+    },
+  });
+
+  if (!budget) {
+    throw new NotFoundException('Budget not found');
+  }
+
+  const [transactions, total] = await OneTimeTransactionRepository.findAndCount(
+    {
+      where: {
+        account: {
+          id: account.id,
+        },
+        category: {
+          id: budget.category.id,
+        },
+      },
+      take: limit,
+      skip: skip,
+      order: { createdAt: 'desc' },
+    }
+  );
+
+  return {
+    transactions,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
 };

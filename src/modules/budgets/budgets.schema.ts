@@ -1,5 +1,4 @@
 import z from 'zod';
-import { categorySchema } from '../categories/categories.schema';
 
 export const createBudgetSchema = z.object({
   amount: z.number().positive(),

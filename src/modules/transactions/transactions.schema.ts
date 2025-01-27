@@ -1,5 +1,4 @@
 import z from 'zod';
-import validator from 'validator';
 import { TransactionType } from './transaction-type.enum';
 
 export const baseCreateTransactionSchema = z.object({
